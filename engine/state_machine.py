@@ -8,11 +8,9 @@ def resolve_choice(user_input: str, valid_options: dict, context: dict) -> str |
     """
     normalized = user_input.strip().lower()
 
-    # exact
     if normalized in valid_options:
         return valid_options[normalized]
 
-    # simple contains-based heuristics
     for key in valid_options:
         if key == "yes" and any(token in normalized for token in ["yes", "y", "yeah", "yep", "sure"]):
             return valid_options[key]
@@ -39,21 +37,17 @@ class ChatStateMachine:
     def advance(self, user_input: str):
         node = self.dialogue[self.state]
 
-        # Global trigger parsing / context updates
         self.context = parse_triggers(user_input, self.context)
 
         if self.context.get("wants_help") and self.state != "help_response":
-            # you can choose where help should surface; here we let it interrupt most states
             self.state = "help_response"
             return
 
-        # Intercept based on context (example: fear at question_1)
         if self.state == "question_1" and self.context.get("emotion") == "fear":
             if "fear_response" in self.dialogue:
                 self.state = "fear_response"
                 return
-
-        # Explicit name prompt overrides / ensures extraction
+            
         if node.get("input") == "store_name":
             self.context["name"] = extract_name(user_input)
             self.state = node["next"]
