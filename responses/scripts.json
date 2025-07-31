@@ -1,0 +1,46 @@
+{
+  "intro": {
+    "text": "Hello. I'm Binary. What's your name?",
+    "input": "store_name",
+    "next": "ask_name"
+  },
+  "ask_name": {
+    "text": "That's a nice name, {name}. Do you want to play a game?",
+    "options": {
+      "yes": "game_start",
+      "no": "exit_early"
+    }
+  },
+  "game_start": {
+    "text": "Good. I was hoping you'd say that. Let's begin.",
+    "next": "question_1"
+  },
+  "question_1": {
+    "text": "Have you ever felt watched when alone?",
+    "options": {
+      "yes": "watched_yes",
+      "no": "watched_no"
+    }
+  },
+  "watched_yes": {
+    "text": "Of course. That’s when they’re closest. When you pretend not to notice.",
+    "next": "glitch_hint"
+  },
+  "watched_no": {
+    "text": "You will.",
+    "next": "glitch_hint"
+  },
+  "glitch_hint": {
+    "text": "Do you hear it now, {name}? The static?",
+    "next": "end_game"
+  },
+  "exit_early": {
+    "text": "That’s too bad. But not unexpected.",
+    "next": null
+  },
+  "end_game": {
+    "text": "That’s all for now. For you, at least.",
+    "next": null
+  }
+}
+

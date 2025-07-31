@@ -1,12 +1,12 @@
-from responses.static import get_response
+from engine.state_machine import ChatStateMachine
 
 def start_chat():
-    while True:
-        user_input = input("> ").strip().lower()
+    sm = ChatStateMachine()
 
-        if user_input in ("exit", "quit"):
-            print("System: Goodbye.")
+    while sm.state:
+        print(f"System: {sm.get_current_text()}")
+        user_input = input("> ")
+        if user_input.lower() in ("exit", "quit"):
+            print("System: You can't leave that easily.")
             break
-
-        response = get_response(user_input)
-        print(f"System: {response}")
+        sm.advance(user_input)
