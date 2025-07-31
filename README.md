@@ -53,3 +53,8 @@ python3 main.py or python main.py # if using venv
 - Add typing delays and glitch effects for atmosphere
 - Incorporate dynamic and unsettling chatbot behavior
 - Enhance narrative immersion with psychological horror elements
+
+
+# ⚠️ Disclaimer
+This is a personal project inspired by The Magnus Archives and is not affiliated with the original creators.
+Use at your own risk and expect unsettling content
