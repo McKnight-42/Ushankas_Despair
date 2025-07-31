@@ -1,20 +1,55 @@
 # Ushankas_Despair 👁️
 
-A horror-themed chatbot game inspired by The Magnus Archives, built from scratch in Python.
+A horror-themed interactive chatbot game inspired by *The Magnus Archives: Binary*.  
+Built in Python with a branching dialogue engine designed to immerse players in an eerie, unsettling experience.
 
-Follow me along the journey of growing this out 
+---
 
-to see the source inpsiration please check out the Magnus Archives podcast, specific episode is 64: Binary
+## 🎮 Gameplay
 
+Chat with the entity known as **Binary**.  
+Answer questions, make choices, and uncover unsettling truths — if you dare.  
 
-## Project Progression
+Type `exit` or `quit` anytime to leave the game.
+
+---
+
+## 🛠️ Installation & Usage
+
+1. **Clone the repo:**
+
+   ```bash
+   git clone https://github.com/McKnight-42/Ushankas_Despair.git
+   cd Ushankas_Despair
+
+2. (Optional) Create a Python virtual environment:
+```
+python3 -m venv venv
+source venv/bin/activate  # macOS/Linux
+venv\Scripts\activate     # Windows
+```
+
+3. Run the chatbot:
+```
+python3 main.py or python main.py # if using venv
+```
+
+## Project Roadmap & Progression
 
 ### Phase 1: Basic CLI Chatbot
-- Simple keyword matching responses
-- Static dialogue with no memory or branching
+- Simple keyword-based chatbot with static responses
+- Single-turn replies without memory or branching
+- Sets creepy, atmospheric tone for the game
 
-### Phase 2: State Machine Dialogue Engine
-- Dialogue scripts loaded from JSON
-- Branching narrative based on user input
-- Stores player context (e.g., name)
-- Supports next-state transitions and options
+### Phase 2: Dialogue State Machine & Branching Narrative
+- Loads dialogue scripts from JSON for flexible storytelling
+- Tracks conversation state and stores player context (e.g., name)
+- Supports branching dialogue paths based on user input options
+- Safely formats dialogue with stored context variables
+- Foundation for expanding into a full interactive horror experience
+
+### Next Steps: Phase 3 (Upcoming)
+- Improve input parsing and sanitization (e.g., extracting names)
+- Add typing delays and glitch effects for atmosphere
+- Incorporate dynamic and unsettling chatbot behavior
+- Enhance narrative immersion with psychological horror elements
