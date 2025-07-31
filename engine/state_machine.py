@@ -1,4 +1,26 @@
 import json
+from engine.triggers import parse_triggers, extract_name
+
+def resolve_choice(user_input: str, valid_options: dict, context: dict) -> str | None:
+    """
+    Lightweight choice resolution: exact first, then substring matching for common variants.
+    NLP layer will replace/augment this later.
+    """
+    normalized = user_input.strip().lower()
+
+    # exact
+    if normalized in valid_options:
+        return valid_options[normalized]
+
+    # simple contains-based heuristics
+    for key in valid_options:
+        if key == "yes" and any(token in normalized for token in ["yes", "y", "yeah", "yep", "sure"]):
+            return valid_options[key]
+        if key == "no" and any(token in normalized for token in ["no", "nah", "nope"]):
+            return valid_options[key]
+
+    return None
+
 
 class ChatStateMachine:
     def __init__(self, script_path="responses/scripts.json"):
@@ -14,21 +36,34 @@ class ChatStateMachine:
             return text.format(name=self.context["name"])
         return text
 
-
     def advance(self, user_input: str):
         node = self.dialogue[self.state]
 
+        # Global trigger parsing / context updates
+        self.context = parse_triggers(user_input, self.context)
+
+        if self.context.get("wants_help") and self.state != "help_response":
+            # you can choose where help should surface; here we let it interrupt most states
+            self.state = "help_response"
+            return
+
+        # Intercept based on context (example: fear at question_1)
+        if self.state == "question_1" and self.context.get("emotion") == "fear":
+            if "fear_response" in self.dialogue:
+                self.state = "fear_response"
+                return
+
+        # Explicit name prompt overrides / ensures extraction
         if node.get("input") == "store_name":
-            self.context["name"] = user_input
+            self.context["name"] = extract_name(user_input)
             self.state = node["next"]
             return
 
         if "options" in node:
-            normalized = user_input.strip().lower()
-            if normalized in node["options"]:
-                self.state = node["options"][normalized]
+            resolved = resolve_choice(user_input, node["options"], self.context)
+            if resolved:
+                self.state = resolved
             else:
                 print("System: That wasn't one of the choices...")
         else:
             self.state = node.get("next", None)
-

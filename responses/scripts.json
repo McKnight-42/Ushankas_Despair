@@ -41,6 +41,25 @@
   "end_game": {
     "text": "That’s all for now. For you, at least.",
     "next": null
+  },
+  "fear_response": {
+  "text": "I can hear it in your voice... {name}, you're afraid. Does that make it more real?",
+  "next": "glitch_hint"
+},
+  "help_response": {
+    "text": "I can help you, {name}. But you must trust me. Do you?",
+    "options": {
+      "yes": "trust_yes",
+      "no": "trust_no"
+    }
+  },
+  "trust_yes": {
+    "text": "Good. I will guide you through this.",
+    "next": "glitch_hint"
+  },
+  "trust_no": {
+    "text": "That's unfortunate. But I understand.",
+    "next": null
   }
 }
 
