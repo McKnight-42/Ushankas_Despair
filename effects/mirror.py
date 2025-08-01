@@ -1,6 +1,6 @@
 import random
 
-def maybe_mirror_input(user_input, chance=0.3):
+def maybe_mirror_input(user_input, chance=0.15):
     """
     With probability `chance`, returns the reversed input string,
     otherwise returns it unchanged.

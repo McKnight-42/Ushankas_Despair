@@ -26,7 +26,7 @@ def start_chat():
         time.sleep(random.uniform(0.6, 1.4))
 
         # Occasionally echo something from earlier inputs for unsettling effect
-        if user_history and random.random() < 0.15:
+        if user_history and random.random() < 0.08:
             word = extract_echoable_word(user_history)
             if word:
                 typewriter_print(f"System: ...you said '{word}', didn't you?")
