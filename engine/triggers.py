@@ -2,24 +2,19 @@ import re
 
 def extract_name(user_input: str) -> str:
     """
-    Try to pull a name out of free-form input like:
-      "I'm John", "My name is Alice", "Call me Sam"
-    Falls back to the first capitalized word or the raw input.
+    Attempt to extract a name from user input by removing
+    common intro phrases and taking the first remaining word.
     """
-    patterns = [
-        r"i(?:'| a)?m\s+([A-Za-z]+)",        # I'm John / Im John / I am John
-        r"my name is\s+([A-Za-z]+)",        # my name is John
-        r"call me\s+([A-Za-z]+)",           # call me John
-    ]
-    lowered = user_input.lower()
-    for pattern in patterns:
-        match = re.search(pattern, lowered)
-        if match:
-            return match.group(1).capitalize()
 
-    first = user_input.strip().split()[0]
-    cleaned = re.sub(r"[^\w\-']", "", first)
-    return cleaned.capitalize()
+    cleaned = user_input.lower()
+    cleaned = re.sub(r"\b(i'?m|i am|my name is|it's|it is)\b", "", cleaned)
+    cleaned = cleaned.strip(" ,.!?\"'")
+    words = cleaned.split()
+
+    if words:
+        return words[0].capitalize()
+    else:
+        return "Hello Stranger"
 
 def parse_triggers(user_input: str, context: dict) -> dict:
     """

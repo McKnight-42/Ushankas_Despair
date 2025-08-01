@@ -22,12 +22,19 @@ def resolve_choice(user_input: str, valid_options: dict, context: dict) -> str |
 
 class ChatStateMachine:
     def __init__(self, script_path="responses/scripts.json"):
+        """
+        Initialize the state machine with the dialogue script.
+        """
         with open(script_path, 'r') as f:
             self.dialogue = json.load(f)
         self.state = "intro"
         self.context = {}
 
     def get_current_text(self):
+        """
+        Retrieve the current state's dialogue text,
+        substituting any placeholders from context.
+        """
         node = self.dialogue[self.state]
         text = node["text"]
         if "{name}" in text and "name" in self.context:
@@ -35,23 +42,29 @@ class ChatStateMachine:
         return text
 
     def advance(self, user_input: str):
+        """
+        Advance the state machine based on user input,
+        handling special inputs, triggers, and branching.
+        """
         node = self.dialogue[self.state]
 
+        # 1. Handle input nodes like storing name
+        if node.get("input") == "store_name":
+            self.context["name"] = extract_name(user_input)
+            self.state = node["next"]
+            return
+
+        # 2. Handle special cases like help or fear
         self.context = parse_triggers(user_input, self.context)
 
         if self.context.get("wants_help") and self.state != "help_response":
             self.state = "help_response"
             return
 
-        if self.state == "question_1" and self.context.get("emotion") == "fear":
+        if self.context.get("emotion") == "fear":
             if "fear_response" in self.dialogue:
                 self.state = "fear_response"
                 return
-            
-        if node.get("input") == "store_name":
-            self.context["name"] = extract_name(user_input)
-            self.state = node["next"]
-            return
 
         if "options" in node:
             resolved = resolve_choice(user_input, node["options"], self.context)
@@ -61,3 +74,4 @@ class ChatStateMachine:
                 print("System: That wasn't one of the choices...")
         else:
             self.state = node.get("next", None)
+
